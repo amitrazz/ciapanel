@@ -1,0 +1,75 @@
+<?php
+  class Post_model extends CI_model{
+    public function __constructor(){
+      $this->load->database();
+    }
+    public function get_posts($slug = FALSE, $limit = FALSE, $offset  = FALSE){
+      if($limit){
+        $this->db->limit($limit,$offset);
+      }
+
+      if($slug  == false){
+        $this->db->order_by('posts.id','DESC');
+        $this->db->join('categories','categories.id = posts.categories_id');
+        $query  = $this->db->get('posts');
+        return $query->result_array();
+      }
+      $query  = $this->db->get_where('posts', array( 'slug'  => $slug));
+      return $query->row_array();
+
+    }
+    public function create_post($post_image){
+      $slug = url_title($this->input->post('title'));
+      $data = array(
+        'title'              =>  $this->input->post('title'),
+        'slug'               =>  $slug,
+        'body'               =>  $this->input->post('body'),
+        'categories_id'      =>  $this->input->post('categories_id'),
+        'user_id'            =>   $this->session->userdata('user_id'),
+        'post_image'         =>  $post_image
+      );
+      return $this->db->insert('posts', $data);
+    }
+    public function delete_post($id){
+      $this->db->where('id', $id);
+      $this->db->delete('posts');
+      return true;
+
+    }
+    public function update_post(){
+      $slug = url_title($this->input->post('title'));
+      $data = array(
+        'title'     =>  $this->input->post('title'),
+        'slug'      =>  $slug,
+        'body'      =>  $this->input->post('body'),
+        'categories_id'      =>  $this->input->post('categories_id')
+      );
+      $this->db->where('id', $this->input->post('id'));
+      return $this->db->update('posts', $data);
+
+    }
+  public function get_categories(){
+    $this->db->order_by('name');
+    $query  = $this->db->get('categories');
+    return $query->result_array();
+
+  }
+  public function get_posts_by_category($categories_id){
+    $this->db->order_by('posts.id','DESC');
+    $this->db->join('categories','categories.id = posts.categories_id');
+    $query  = $this->db->get_where('posts',array(
+      'categories_id'      => $categories_id
+    ));
+    return $query->result_array();
+  }
+  public function get_all_post(){
+    $this->db->order_by('id','DSEC');
+    $query  = $this->db->get('posts');
+    return $query->result_array();
+  }
+  
+  public function posts_count(){
+    $query = $this->db->query('SELECT * FROM posts');
+   return $query->num_rows();
+  }
+ }

@@ -1,0 +1,39 @@
+.post-date {
+    background: rgb(207, 207, 207);
+    padding: 5px;
+    margin: 3px;
+    display: block;
+}
+
+.red {
+    color: red;
+}
+
+.form-area {
+    background-color: #FAFAFA;
+    padding: 10px 40px 60px;
+    margin: 10px 0px 60px;
+    border: 1px solid GREY;
+}
+
+.pagination-link {
+    margin: 30px 0;
+}
+
+.pagination-link strong {
+    padding: 8px 13px;
+    margin: 5px;
+    background: lightgray;
+    border: 1px solid red;
+}
+
+a.pagination-link {
+    padding: 8px 13px;
+    margin: 5px;
+    background: lightgray;
+    border: 1px solid red;
+}
+
+.cat-delete {
+    display: inline;
+}
